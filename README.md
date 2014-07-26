@@ -6,6 +6,7 @@ Reca is a wrapper for Mahout single-machine recommendation algorithms.
 
 ### Create data model
 
+``` clj
 	 ;; file data model
 	 (file-model "./data/ratings.csv")
 
@@ -20,6 +21,7 @@ Reca is a wrapper for Mahout single-machine recommendation algorithms.
      ;; no there yet
 
      ;; MongoDB
+```
 
 ### Create recommender
 
