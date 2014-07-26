@@ -22,7 +22,7 @@ Reca is a wrapper for Mahout single-machine recommendation algorithms.
 ;; no there yet
 
 ;; MongoDB
-
+;; no there yet
 ```
 
 ### Create recommender
