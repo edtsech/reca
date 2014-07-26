@@ -112,6 +112,4 @@ Inspired by https://github.com/pingles/mahout-sample
 
 ## License
 
-Copyright © 2014
-
 MIT License
