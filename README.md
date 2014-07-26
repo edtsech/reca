@@ -37,12 +37,12 @@ Reca is a wrapper for Mahout's single-machine recommendation algorithms.
 ``` clj
 ;; user based recommender
 (user-recommender model)
-;; specify similiarity algorithm (pearson correlation by default)
+;; specify similarity algorithm (pearson correlation by default)
 (user-recommender model euclidean)
 
 ;; item based recommender
 (item-recommender model)
-;; specify similiarity algorithm (log-likelihood by default)
+;; specify similarity algorithm (log-likelihood by default)
 (item-recommender model tanimoto)
 ```
 
@@ -55,7 +55,7 @@ Reca is a wrapper for Mahout's single-machine recommendation algorithms.
 (recommend recommender user-id 20)
 ```
 
-### Find similiar items
+### Find similar items
 
 ``` clj
 (similar-items recommender item-id)
