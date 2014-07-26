@@ -91,7 +91,7 @@
 
 (defn similar-items
   ([^ItemBasedRecommender r item-id]
-     (similar r item-id 10))
+     (similar-items r item-id 10))
   ([^ItemBasedRecommender r item-id n]
      (->clj (.mostSimilarItems r item-id n))))
 
