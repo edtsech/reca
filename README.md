@@ -13,10 +13,16 @@ Reca is a wrapper for Mahout single-machine recommendation algorithms.
 
 ;; PostgreSQL data model
 (make-pg-connection {:db-name "db"
-                       :host "localhost"
-                       :port 5432
-                       :user "user"
-                       :pass "pass"})
+                     :host "localhost"
+                     :port 5432
+                     :user "user"
+                     :pass "pass"})
+
+(reca/pg-db-model conn {:table "ratings"
+                        :user-id "user_id"
+                        :item-id "item_id"
+                        :preference "rating"
+                        :timestamp "created_at"})
 
 ;; MySQL
 ;; no there yet
