@@ -1,6 +1,6 @@
 # Reca
 
-Reca is a wrapper for Mahout single-machine recommendation algorithms.
+Reca is a wrapper for Mahout's single-machine recommendation algorithms.
 
 ## Usage
 
