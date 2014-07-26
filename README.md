@@ -18,12 +18,12 @@ Reca is a wrapper for Mahout's single-machine recommendation algorithms.
                      :user "user"
                      :pass "pass"})
 
-(reca/pg-db-model connection
-                  {:table "ratings"
-                   :user-id "user_id"
-                   :item-id "item_id"
-                   :preference "rating"
-                   :timestamp "created_at"})
+(pg-db-model connection
+             {:table "ratings"
+              :user-id "user_id"
+              :item-id "item_id"
+              :preference "rating"
+              :timestamp "created_at"})
 
 ;; MySQL
 ;; no there yet
@@ -35,7 +35,7 @@ Reca is a wrapper for Mahout's single-machine recommendation algorithms.
 ### Create recommender
 
 ``` clj
-;; user based recommender
+;; user basd recommender
 (user-recommender model)
 ;; specify similarity algorithm (pearson correlation by default)
 (user-recommender model euclidean)
