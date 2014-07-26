@@ -46,14 +46,13 @@
   (FileDataModel. (File. path)))
 
 ;; Algorithms
-
 (defn log-likelihood
-  [m]
-  (LogLikelihoodSimilarity. m))
+  [model]
+  (LogLikelihoodSimilarity. model))
 
 (defn tanimoto
-  [m]
-  (TanimotoCoefficientSimilarity. m))
+  [model]
+  (TanimotoCoefficientSimilarity. model))
 
 (defn pearson
   [model]
@@ -65,11 +64,11 @@
 
 ;; API
 
-(defn neighborhood
-([sim-fn model]
- (neighborhood 5 sim-fn model))
-([n sim-fn model]
-  (NearestNUserNeighborhood. n (sim-fn model) model)))
+(defn- neighborhood
+  ([sim-fn model]
+   (neighborhood sim-fn model 5))
+  ([sim-fn model n]
+   (NearestNUserNeighborhood. n (sim-fn model) model)))
 
 (defn user-recommender
   "Creates a file based user-recommender"
@@ -77,11 +76,11 @@
     (user-recommender model pearson))
   ([model sim-fn]
     (CachingRecommender. (GenericUserBasedRecommender. model
-                                  (neighborhood 10 sim-fn model)
+                                  (neighborhood sim-fn model 10)
                                   (sim-fn model))))
   ([model sim-fn n]
     (CachingRecommender. (GenericUserBasedRecommender. model
-                                  (neighborhood n sim-fn model)
+                                  (neighborhood sim-fn model n)
                                   (sim-fn model)))))
 
 (defn item-recommender
@@ -90,17 +89,17 @@
   ([model sim-fn]
      (CachingRecommender. (GenericItemBasedRecommender. model (sim-fn model)))))
 
-(defn similar
-  ([^ItemBasedRecommender r i]
-     (similar r i 10))
-  ([^ItemBasedRecommender r i n]
-     (->clj (.mostSimilarItems r i n))))
+(defn similar-items
+  ([^ItemBasedRecommender r item-id]
+     (similar r item-id 10))
+  ([^ItemBasedRecommender r item-id n]
+     (->clj (.mostSimilarItems r item-id n))))
 
 (defn similar-users
   ([^Recommender r user-id]
     (similar-users r user-id 10))
   ([^Recommender r user-id n]
-     (vec (.mostSimilarUserIDs r user-id n))))
+     (->clj (.mostSimilarUserIDs r user-id n))))
 
 (defn recommend
   "Using recommender r, generates a sequence of n recommended item id's and their value."
@@ -123,11 +122,6 @@
   [^Recommender r u i]
   (.estimatePreference r u i))
 
-;; Java
-;; Class
-;;   http://grepcode.com/file/repo1.maven.org/maven2/org.apache.mahout/mahout-core/0.9/org/apache/mahout/cf/taste/impl/eval/AverageAbsoluteDifferenceRecommenderEvaluator.java#AverageAbsoluteDifferenceRecommenderEvaluator
-;; Interface
-;;   http://grepcode.com/file/repo1.maven.org/maven2/org.apache.mahout/mahout-core/0.9/org/apache/mahout/cf/taste/eval/RecommenderEvaluator.java#RecommenderEvaluator
 (def avg-diff-evaluator
   (AverageAbsoluteDifferenceRecommenderEvaluator. ))
 

@@ -1,7 +1,10 @@
 (ns reca.core-test
-  (:use clojure.test
+  (:use expectations
         reca.core))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(def model (file-model "data/ratings.csv"))
+
+(expect (log-likelihood model))
+(expect (tanimoto model))
+(expect (euclidean model))
+(expect (pearson model))
