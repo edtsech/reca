@@ -78,12 +78,14 @@ Reca is a wrapper for Mahout's single-machine recommendation algorithms.
 Using rescorer you could add your application logic to recommender engine.
 You could increase scores for particular items and decrease for others based on your application logic.
 
+build-rescorer takes two function: first one for rescoring, second one for filtering.
+Second argument is optional and used when you want to filter out some items from your dataset.
+
 ``` clj
 (build-rescorer (fn [id original-score]
-				   (if ...
-				     (* original-score 1.2)
-				     original-score)))
-
+                  (if ...
+                    (* original-score 1.2)
+                    original-score)))
 ;; usage
 (recommend recommender user-id 20 rescorer)
 ```

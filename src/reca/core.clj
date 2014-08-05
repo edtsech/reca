@@ -110,12 +110,19 @@
   ([^Recommender r user-id n rescorer]
      (->clj (.recommend r user-id n rescorer))))
 
-(defn build-rescorer [f]
-  (reify IDRescorer
-    (rescore [_ id original-score]
-      (f id original-score))
-    (isFiltered [_ id]
-      false)))
+(defn build-rescorer
+  ([rescore-fn]
+   (reify IDRescorer
+     (rescore [_ id original-score]
+       (rescore-fn id original-score))
+     (isFiltered [_ id]
+       false)))
+  ([rescore-fn filter-fn]
+   (reify IDRescorer
+     (rescore [_ id original-score]
+       (rescore-fn id original-score))
+     (isFiltered [_ id]
+       (filter-fn id)))))
 
 (defn estimate-user-preference
   "Using recommender r, estimates user u's preference for item i."
