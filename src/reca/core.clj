@@ -70,22 +70,21 @@
   ([sim-fn model n]
    (NearestNUserNeighborhood. n (sim-fn model) model)))
 
-(defn user-recommender
-  "Creates a file based user-recommender"
+(defn user-based-recommender
   ([model]
-    (user-recommender model pearson))
+    (user-based-recommender model pearson))
   ([model sim-fn]
-    (CachingRecommender. (GenericUserBasedRecommender. model
-                                  (neighborhood sim-fn model 10)
-                                  (sim-fn model))))
+     (CachingRecommender. (GenericUserBasedRecommender. model
+                                                        (neighborhood sim-fn model 10)
+                                                        (sim-fn model))))
   ([model sim-fn n]
-    (CachingRecommender. (GenericUserBasedRecommender. model
-                                  (neighborhood sim-fn model n)
-                                  (sim-fn model)))))
+     (CachingRecommender. (GenericUserBasedRecommender. model
+                                                        (neighborhood sim-fn model n)
+                                                        (sim-fn model)))))
 
-(defn item-recommender
+(defn item-based-recommender
   ([model]
-     (item-recommender model log-likelihood))
+     (item-based-recommender model log-likelihood))
   ([model sim-fn]
      (CachingRecommender. (GenericItemBasedRecommender. model (sim-fn model)))))
 

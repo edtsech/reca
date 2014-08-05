@@ -3,13 +3,21 @@
         reca.core))
 
 (def model (file-model "data/ratings.csv"))
-(def recommender (user-recommender model))
+(def recommender (user-based-recommender model))
 
 ;; Check sim algos
 (expect (log-likelihood model))
 (expect (tanimoto model))
 (expect (euclidean model))
 (expect (pearson model))
+
+;; user based recommender
+(expect (user-based-recommender model))
+
+;; item based recommender
+(expect (item-based-recommender model))
+(expect (item-based-recommender model log-likelihood))
+
 
 ;; RESCORING
 (def rescorer (build-rescorer (fn [id original-score]
