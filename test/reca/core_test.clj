@@ -20,20 +20,23 @@
 
 
 ;; RESCORING
-(def rescorer (build-rescorer (fn [id original-score]
-                                (if (= id 104)
-                                  (* 1.2 original-score)
-                                  original-score))))
+(def rescorer (build-rescorer {:rescore (fn [id original-score]
+                                          (if (= id 104)
+                                            (* 1.2 original-score)
+                                            original-score))}))
 
 (expect [{:item 104, :value 6.0} {:item 106, :value 4.0}]
         (vec (recommend recommender 1 5 rescorer)))
 
 ;; filtering
-(def filtering (build-rescorer (fn [_ original-score] original-score)
-                               (fn [id] (= id 104))))
+(let [filtering (build-rescorer {:rescore (fn [_ original-score] original-score)
+                                 :ignore  (fn [id] (= id 104))})]
+  
+  (expect [{:item 106, :value 4.0}]
+          (vec (recommend recommender 1 5 filtering))))
 
-(expect [{:item 106, :value 4.0}]
-        (vec (recommend recommender 1 5 filtering)))
+;; cluster based recommender
+
 
 
 

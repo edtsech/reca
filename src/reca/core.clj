@@ -6,8 +6,7 @@
            [org.apache.mahout.cf.taste.impl.similarity EuclideanDistanceSimilarity PearsonCorrelationSimilarity LogLikelihoodSimilarity TanimotoCoefficientSimilarity]
            [org.apache.mahout.cf.taste.impl.neighborhood NearestNUserNeighborhood ThresholdUserNeighborhood]
            [org.apache.mahout.cf.taste.recommender Recommender ItemBasedRecommender UserBasedRecommender IDRescorer]
-           [org.apache.mahout.cf.taste.impl.recommender CachingRecommender]
-           [org.apache.mahout.cf.taste.impl.recommender GenericUserBasedRecommender GenericItemBasedRecommender]
+           [org.apache.mahout.cf.taste.impl.recommender GenericUserBasedRecommender GenericItemBasedRecommender CachingRecommender]
            [org.apache.mahout.cf.taste.eval RecommenderEvaluator RecommenderBuilder]
            [org.apache.mahout.cf.taste.impl.eval AverageAbsoluteDifferenceRecommenderEvaluator RMSRecommenderEvaluator]
            [org.apache.mahout.cf.taste.impl.model.jdbc ReloadFromJDBCDataModel PostgreSQLJDBCDataModel]))
@@ -110,18 +109,16 @@
      (->clj (.recommend r user-id n rescorer))))
 
 (defn build-rescorer
-  ([rescore-fn]
-   (reify IDRescorer
-     (rescore [_ id original-score]
-       (rescore-fn id original-score))
-     (isFiltered [_ id]
-       false)))
-  ([rescore-fn filter-fn]
-   (reify IDRescorer
-     (rescore [_ id original-score]
-       (rescore-fn id original-score))
-     (isFiltered [_ id]
-       (filter-fn id)))))
+  [options]
+  (reify IDRescorer
+    (rescore [_ id original-score]
+      (if (:rescore options)
+        ((:rescore options) id original-score)
+        original-score))
+    (isFiltered [_ id]
+      (if (:ignore options)
+        ((:ignore options) id)
+        false))))
 
 (defn estimate-user-preference
   "Using recommender r, estimates user u's preference for item i."
